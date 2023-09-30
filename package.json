@@ -6,8 +6,6 @@
     "type": "module",
     "scripts": {
         "start": "nodemon index.js",
-        "build:dev": "webpack --config webpack.dev.cjs --mode development",
-        "build:prod:optimization": "webpack --config webpack.prod.cjs --mode production"
     },
     "keywords": [],
     "author": "",
