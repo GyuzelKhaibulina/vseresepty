@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from 'cors';
 import multer from "multer";
 import bodyParser from 'body-parser';
-import { path, port } from './const/const.js';
+import { port } from './const/const.js';
 
 
 const app = express();
@@ -62,12 +62,6 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
   res.status(200).json(file.filename);
 });
 
-app.post("/email", async (req,res) =>  {
-        const {email, message} = req.body;
-        console.log (req.body)
-        return res.json({result: await SendEmail.send(email, message)})
-    }
-)
 
 app.get("/email", (req,res) =>  {
     res.send (`Requested from ${req.hostname} : <h>Hello</h1>`)

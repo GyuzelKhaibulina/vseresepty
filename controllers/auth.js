@@ -37,7 +37,7 @@ export const resetPassword = (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
     const q = `UPDATE users SET password=?, key_link="" WHERE email=?`;
-    db.query(q, [hash, req.body.email], ((err, data) => {
+    db.query(q, [hash, req.body.email], ((err) => {
         if (err) return res.status(500).json(err);
         return res
             .clearCookie("access_token", {sameSite:"none", secure:true})
@@ -71,7 +71,7 @@ export const temporaryRegister = (req, res) => {
         if (data.length>0) return res.status(409).json("Пользователь c таким email уже зерегистрирован.");
         const q = "INSERT INTO temporary_users(`username`,`email`, `code`) VALUES (?)";
         const values = [req.body.username, req.body.email, req.body.code];
-        db.query(q, [values], (err, data) => {
+        db.query(q, [values], (err) => {
             if (err) return res.status(500).json(err);
             return res.status(200).json("Пользователь успешно создан.");
         });   
@@ -87,7 +87,7 @@ export const register = (req, res) => {
     const hash = bcrypt.hashSync(req.body.password, salt);
     const q = "INSERT INTO users(`username`,`email`,`password`,`saved_recipes`) VALUES (?)";
     const values = [req.body.username, req.body.email, hash, req.body.saved_recipes];
-    db.query(q, [values], (err, data) => {
+    db.query(q, [values], (err) => {
        if (err) return res.status(500).json(err);
        return res
                 .status(200).json("Пользователь успешно создан.");
@@ -120,7 +120,7 @@ export const addUser  = (req, res) => {
     else return res.status(406).json("Срок действия кода истек");
 };
 
-export const authorization = (req, res, next) => {
+export const authorization = (req, res) => {
     const token = req.cookies.access_token;
     if (!token) {
         return res
